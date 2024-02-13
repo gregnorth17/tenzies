@@ -21,19 +21,17 @@ function App() {
     return newDice
   }
 
-  const [die, setDie] = useState(allNewDice())
+  const [dice, setDice] = useState(allNewDice())
 
-  const handleClick = () => {
-    // keep prev state
-    // map over it
-    // change isHeld to it's opposite
-   console.log('click')
-   setDie(prevState => {
-    return prevState.map(dice => dice.isHeld = !dice.isHeld)
-   })
+  const holdDice = id => {
+    setDice(oldDice => oldDice.map(die => {
+      return die.id === id ?
+        {...die, isHeld: !die.isHeld} :
+        die
+    }))
   }
 
-  const dieElements = die.map(({value, isHeld, id}) => <Die handleClick={handleClick} key={id} isHeld={isHeld} value={value} />)
+  const dieElements = dice.map(({value, isHeld, id}) => <Die holdDice={() => holdDice(id)} key={id} id={id} isHeld={isHeld} value={value} />)
 
   return (
     <>
@@ -41,7 +39,7 @@ function App() {
         <div className='container'>
           {dieElements}
         </div>
-        <button onClick={() => setDie(allNewDice())} className='btn'>Roll</button>
+        <button onClick={() => setDice(allNewDice())} className='btn'>Roll</button>
       </main>
     </>
   )
