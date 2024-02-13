@@ -1,8 +1,15 @@
 import './App.css'
 
-const Die = ({value}) => {
+const Die = ({handleClick, value, isHeld}) => {
+
+  // const getStyle = isHeld => isHeld ? {background: '#59E391'} : {background: '#FFFFFF'}
+
+  const style = {
+    background: isHeld ? '#59E391' : '#FFFFFF'
+  }
+
   return (
-    <div className='die'>
+    <div onClick={() => handleClick()} className='die' style={style}>
       {value}
     </div>
   )
