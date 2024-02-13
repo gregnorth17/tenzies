@@ -4,42 +4,50 @@ import './App.css'
 import Die from './Die'
 
 function App() {
-  
+
   const allNewDice = () => {
     const newDice = []
     for(let i = 0; i < 10; i++) {
-      
-      let num = Math.ceil(Math.random() * 6)
-      
-      newDice.push({
-        value: num,
-        isHeld: false,
-        id: nanoid()
-      })
-      
+      newDice.push(createDice())
     }
     return newDice
+  }
+  
+  const createDice = () => {
+    return {
+      value: Math.ceil(Math.random() * 6),
+      isHeld: false,
+      id: nanoid()
+    }
   }
 
   const [dice, setDice] = useState(allNewDice())
 
-  const holdDice = id => {
-    setDice(oldDice => oldDice.map(die => {
-      return die.id === id ?
-        {...die, isHeld: !die.isHeld} :
-        die
+  const rollDice = () => {
+    setDice(oldDice => oldDice.map(dice => {
+      return dice.isHeld ?
+        dice :
+        createDice()
     }))
   }
 
-  const dieElements = dice.map(({value, isHeld, id}) => <Die holdDice={() => holdDice(id)} key={id} id={id} isHeld={isHeld} value={value} />)
+  const holdDice = id => {
+    setDice(oldDice => oldDice.map(dice => {
+      return dice.id === id ?
+          {...dice, isHeld: !dice.isHeld} :
+          dice
+    }))
+  }
+
+  const diceElements = dice.map(({value, isHeld, id}) => <Die holdDice={() => holdDice(id)} key={id} id={id} isHeld={isHeld} value={value} />)
 
   return (
     <>
       <main>
         <div className='container'>
-          {dieElements}
+          {diceElements}
         </div>
-        <button onClick={() => setDice(allNewDice())} className='btn'>Roll</button>
+        <button onClick={rollDice} className='btn'>Roll</button>
       </main>
     </>
   )
