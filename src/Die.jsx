@@ -1,6 +1,6 @@
 import './App.css'
 
-const Die = ({holdDice, value, isHeld}) => {
+const Die = ({isRunning, holdDice, value, isHeld}) => {
 
   const style = {
     background: isHeld ? '#59E391' : '#FFFFFF'
