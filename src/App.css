@@ -62,8 +62,9 @@ main {
   color: #FFFFFF;
   background: #5035FF;
   border: none;
-  width: 92.16px; 
-  height: 35.84px; 
+  padding: .875em 1.25em;
+  /* width: 92.16px; 
+  height: 35.84px;  */
   border-radius: 3.81px;
   font-size: 1rem;
   font-weight: 700;
