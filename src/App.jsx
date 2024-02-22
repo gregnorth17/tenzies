@@ -6,19 +6,22 @@ import './App.css'
 import Die from './Die'
 
 function App() {
+
+  // change to disable onClick before game
+  // smoother transitions
+
   const [tenzies, setTenzies] = useState(false)
-  const [dice, setDice] = useState([0,0,0,0,0,0,0,0,0,0])
+  const [finalTime, setFinalTime] = useState(null)
+  const [dice, setDice] = useState(allNewDice())
   const [numberOfRolls, setNumberOfRolls] = useState(0)
-  const [timer, setTimer] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
 
   const {
     totalSeconds,
     minutes,
     seconds,
-    // isRunning,
-    start, 
-    pause, 
+    start,
+    pause,
     reset
   } = useStopwatch()
 
@@ -30,6 +33,7 @@ function App() {
       setTenzies(true)
       pause()
       setIsRunning(false)
+      setFinalTime(totalSeconds)
     }
   }, [dice])
 
@@ -52,7 +56,6 @@ function App() {
   function rollDice() {
     if(tenzies) {
       setDice(allNewDice()) 
-      setNumberOfRolls(0)
     } else {
       setDice(oldDice => oldDice.map(dice => {
         return dice.isHeld ?
@@ -64,11 +67,15 @@ function App() {
   }
 
   function startGame() {
-    setDice(allNewDice())
-    setIsRunning(true)
-    setTenzies(false)
     reset()
-    start()
+    setTimeout(() => {
+      start()
+      setNumberOfRolls(0)
+      setTenzies(false)
+      setDice(allNewDice())
+      setIsRunning(true)
+      setFinalTime(0)
+    }, 500)
   }
 
   function holdDice(id) {
@@ -80,8 +87,9 @@ function App() {
   }
 
   const diceElements = dice.map(({value, isHeld, id}) => 
-    <Die holdDice={() => holdDice(id)} 
+    <Die 
          key={id} 
+         holdDice={() => holdDice(id)} 
          id={id} 
          isHeld={isHeld} 
          value={value}
@@ -103,7 +111,7 @@ function App() {
           :
           <button onClick={startGame} className='btn'>New Game</button>
         }
-        <p className='timer'>{tenzies ? `It took you ${numberOfRolls} rolls and ${seconds} seconds to win!` : `${seconds} seconds`}</p>
+        <p className='timer'>{tenzies ? `It took you ${numberOfRolls} rolls and ${finalTime} seconds to win!` : `${seconds} seconds`}</p>
       </main>
     </>
   )

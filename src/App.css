@@ -57,6 +57,11 @@ main {
   text-align: center;
   box-shadow: 0px 2px 2px 0px #00000026;
   cursor: pointer;
+  pointer-events: none;
+}
+
+.addClick {
+  pointer-events: auto;
 }
 
 .btn {
