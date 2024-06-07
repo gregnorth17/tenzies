@@ -8,9 +8,6 @@ import Die from './Die'
 
 function App() {
 
-  // change to disable onClick before game
-  // smoother transitions
-
   const [tenzies, setTenzies] = useState(false)
   const [finalTime, setFinalTime] = useState(null)
   const [dice, setDice] = useState([0,0,0,0,0,0,0,0,0,0])
@@ -101,21 +98,23 @@ function App() {
 
   return (
     <>
-      <main>
-        {tenzies && <Confetti width={width} height={height} />}
-        <h1 className='title'>Tenzies</h1>
-        <p className='instructions'>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
-        <div className='container'>
-          {diceElements}
+      <section>
+        <div className='game'>
+          {tenzies && <Confetti width={width} height={height} />}
+          <h1 className='title'>Tenzies</h1>
+          <p className='instructions'>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+          <div className='container'>
+            {diceElements}
+          </div>
+          {
+            isRunning ?
+            <button onClick={rollDice} className='btn'>Roll</button>
+            :
+            <button onClick={startGame} className='btn'>New Game</button>
+          }
+          <p className='timer'>{tenzies ? `It took you ${numberOfRolls} rolls and ${finalTime} seconds to win!` : `${seconds} seconds`}</p>
         </div>
-        {
-          isRunning ?
-          <button onClick={rollDice} className='btn'>Roll</button>
-          :
-          <button onClick={startGame} className='btn'>New Game</button>
-        }
-        <p className='timer'>{tenzies ? `It took you ${numberOfRolls} rolls and ${finalTime} seconds to win!` : `${seconds} seconds`}</p>
-      </main>
+      </section>
     </>
   )
 }
